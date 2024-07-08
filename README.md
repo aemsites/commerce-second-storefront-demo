@@ -6,8 +6,8 @@ https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Environments
 
-- Preview: https://main--boilerplate-commerce-dropins--OscarMerino.hlx.page/
-- Live: https://main--boilerplate-commerce-dropins--OscarMerino.hlx.live/
+- Preview: https://main--my-first-storefront-demo--OscarMerino.hlx.page/
+- Live: https://main--my-first-storefront-demo--OscarMerino.hlx.live/
 
 ## Pre-requisites
 
