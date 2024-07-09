@@ -117,13 +117,15 @@
   height: 8px;
   padding: 0;
   border-radius: 1rem;
-  background-color: rgba(0 0 0 / 25%);
+  border: 0 none;
+  background-color: var(--color-brand-700);
 }
 
 .carousel .carousel-slide-indicator button:disabled,
 .carousel .carousel-slide-indicator button:hover,
 .carousel .carousel-slide-indicator button:focus-visible {
-  background-color: rgba(0 0 0 / 80%);
+  background-color: var(--color-brand-700);
+  border: 0 none;
 }
 
 .carousel .carousel-slide-indicator span,
@@ -161,13 +163,14 @@
 
 /* stylelint-disable-next-line no-descending-specificity */
 .carousel .carousel-navigation-buttons button {
+  border: 0 none;
   border-radius: 0;
   margin: 0;
   padding: 0;
   width: 40px;
   height: 40px;
   position: relative;
-  background-color: var(--color-neutral-800);
+  background-color: var(--color-brand-700);
 }
 
 .carousel .carousel-navigation-buttons button:hover,
@@ -179,7 +182,7 @@
 .carousel .carousel-navigation-buttons button::after {
   display: block;
   content: "";
-  border: 3px white solid;
+  border: 3px var(--color-neutral-50) solid;
   border-bottom: 0;
   border-left: 0;
   height: 6px;

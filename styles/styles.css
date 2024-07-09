@@ -14,10 +14,10 @@
 
 :root {
   /* Adobe Commerce Dropin design tokens */
-  --color-brand-300: #7A6AFD;
-  --color-brand-500: #6338EE;
-  --color-brand-600: #5424DB;
-  --color-brand-700: #4513BF;
+  --color-brand-300: #FABEC0;
+  --color-brand-500: #F37970;
+  --color-brand-600: #F85C70;
+  --color-brand-700: #E43D40;
   --color-neutral-50: #fff;
   --color-neutral-100: #fafafa;
   --color-neutral-200: #f5f5f5;
