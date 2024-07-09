@@ -19,7 +19,7 @@ export default async function decorate(block) {
       child.className = 'hero-desc-wrapper';
       const buttonLink = child.querySelector('.button-container a');
       buttonLink?.classList.remove('button', 'button-primary');
-      buttonLink?.classList.add('button-primary');
+      buttonLink?.classList.add('button');
     }
   });
 }
