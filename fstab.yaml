@@ -1,5 +1,5 @@
 mountpoints:
-  /: https://adobe.sharepoint.com/:f:/r/sites/MyFirstStorefront/Shared%20Documents/MySecondStorefront?csf=1&web=1&e=VSKtJA
+  /: https://adobe.sharepoint.com/:f:/r/sites/MySecondStorefront/Shared%20Documents/MySecondStorefront?csf=1&web=1&e=y6iYTE
 
 folders:
   /products/: /products/default
