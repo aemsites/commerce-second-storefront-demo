@@ -7,6 +7,11 @@ main .hero-container {
   margin-bottom: 2rem;
 }
 
+.hero-container .default-content-wrapper {
+  max-width: 900px;
+  margin: var(--spacing-large) auto var(--spacing-medium) auto;
+}
+
 .hero {
   position: relative;
   padding: var(--spacing-big);
