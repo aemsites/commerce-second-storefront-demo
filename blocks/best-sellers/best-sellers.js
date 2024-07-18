@@ -1,9 +1,5 @@
-import { addProductsToCart } from '@dropins/storefront-cart/api.js';
 import htm from '../../scripts/htm.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { h, render } from '../../scripts/preact.js';
-
-const html = htm.bind(h);
 
 /**
  * loads and decorates best-sellers
@@ -16,7 +12,6 @@ export default function decorate(block) {
   let data = [];
 
   divElements.forEach((divElement, index) => {
-    console.log(divElement);
     if (divElement.textContent.trim().toLowerCase() === 'product') {
       if (divElements[index + 1]) {
         product = divElements[index + 1].textContent.trim();
@@ -42,7 +37,7 @@ export default function decorate(block) {
           <h2>${item.name}</h2>
           <p>${item.sku}</p>
           <p>${item.description}</p>
-          
+
           <p class="button-container">
             <a
               class="button add-to-cart"
@@ -61,14 +56,9 @@ export default function decorate(block) {
     const script = document.createElement('script');
     script.innerHTML = `
       document.querySelectorAll('.add-to-cart').forEach((button) => {
-          console.log('Add to cart clicked');
-        button.addEventListener('click', (event) => {
-          console.log(event.target.dataset.sku);
+        button.addEventListener('click', async (event) => {
+          const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
           event.preventDefault();
-          
-          const { addProductsToCart } = import('@dropins/storefront-cart/api.js');
-          console.debug('onAddToCart', addProductsToCart);
-          
           addProductsToCart([{ sku: event.target.dataset.sku, quantity: 1 }]);
         });
       });
