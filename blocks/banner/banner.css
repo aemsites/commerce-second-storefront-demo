@@ -1,19 +1,9 @@
 .banner {
+  background-color: var(--color-brand-500);
   padding: var(--spacing-small);
-  position: relative;
-  display: grid;
-}
-
-.banner p:first-child {
-  position: absolute;
-  padding: var(--spacing-small);
-  top: 5%;
   color: var(--color-neutral-50);
-  max-width: 250px;
 }
 
-.banner-wrapper picture {
-  height: 200px;
-  display: grid;
-  overflow: hidden;
+.banner p {
+  margin: 0;
 }
