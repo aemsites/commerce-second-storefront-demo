@@ -17,4 +17,3 @@ import{a as r,M as s,e}from"./transform-shipping-methods.js";import{f as l,o as 
   ${o}
   ${c}
 `,y=async({cartId:a,email:i})=>{if(!a)throw new s;return await e({type:"mutation",query:A,options:{variables:{cartId:a,email:i}},path:"setGuestEmailOnCart.cart",signalType:"cart",transformer:E})};export{v as i,y as s};
-//# sourceMappingURL=setGuestEmailOnCart.js.map

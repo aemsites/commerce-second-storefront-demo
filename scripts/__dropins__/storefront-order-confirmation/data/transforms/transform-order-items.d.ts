@@ -33,7 +33,7 @@ export declare function transformItems(item: NonNullableItem): {
     };
     regularPrice: {
         value: number;
-        currency: import('../../__generated__/types').CurrencyEnum;
+        currency: string;
     };
     discounted: boolean;
     configurableOptions: Record<string, string> | undefined;
