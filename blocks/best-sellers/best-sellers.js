@@ -35,8 +35,8 @@ export default function decorate(block) {
         <div class="card-image">${picture.outerHTML}</div>
         <div class="card-info">
           <h2>${item.name}</h2>
-          <p>${item.sku}</p>
-          <p>${item.description}</p>
+          <p class="card-item-sku">${item.sku}</p>
+          <p class="card-item-description">${item.description}</p>
 
           <p class="button-container">
             <a
