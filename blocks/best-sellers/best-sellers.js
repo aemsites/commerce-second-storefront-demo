@@ -41,7 +41,7 @@ export default function decorate(block) {
           <p class="button-container">
             <a
               class="button add-to-cart"
-              href="#"
+              href="javascript:void(0)"
               data-sku="${item.sku}"
             >
                 Add to cart
