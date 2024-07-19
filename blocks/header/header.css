@@ -192,7 +192,7 @@ header nav[aria-expanded='true'] .nav-sections {
   height: 50px;
   display: flex;
   align-items: center;
-  padding-left: 10%;
+  padding-left: 2%;
 }
 
 header nav .nav-sections ul {
@@ -250,15 +250,20 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 4em;
+    gap: 3em;
     margin: 0;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    text-transform: uppercase;
+    text-transform: capitalize;
     cursor: pointer;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li:first-child {
+    text-transform: uppercase;
+    padding-right: 100%;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
