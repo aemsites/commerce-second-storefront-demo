@@ -169,7 +169,8 @@ header nav .nav-sections a:hover {
 
 header nav .nav-brand a:hover {
   color: var(--color-neutral-100);
-  text-decoration: solid underline var(--color-neutral-100);
+  border: 0 none;
+  text-decoration: none;
 }
 
 header nav .nav-brand img {
@@ -191,6 +192,7 @@ header nav[aria-expanded='true'] .nav-sections {
   height: 50px;
   display: flex;
   align-items: center;
+  padding-left: 10%;
 }
 
 header nav .nav-sections ul {
@@ -248,7 +250,7 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 2em;
+    gap: 4em;
     margin: 0;
   }
 

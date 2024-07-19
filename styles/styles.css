@@ -237,6 +237,17 @@ main .section h6::after {
   width: 200px;
 }
 
+main .section .dropin-design h1::after,
+main .section .dropin-design h2::after,
+main .section .dropin-design h3::after,
+main .section .dropin-design h4::after,
+main .section .dropin-design h5::after,
+main .section .dropin-design h6::after {
+  border: 0 none;
+  padding-top: 0;
+  width: auto;
+}
+
 p,
 dl,
 ol,
