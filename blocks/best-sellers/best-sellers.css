@@ -67,17 +67,8 @@
   margin: 0;
 }
 
-.best-sellers-container h2::after {
-  border-bottom: 2px solid var(--color-brand-500);
-  content: "";
-  display: block;
-  width: 200px;
-}
 
 .best-sellers .wide-card .card-info h2::after {
-  border-bottom: var(--shape-border-width-2) solid var(--color-brand-500);
-  content: "";
-  padding-top: var(--spacing-small);
   width: 75px;
 }
 

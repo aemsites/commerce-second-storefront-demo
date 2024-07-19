@@ -224,6 +224,19 @@ h6 {
   letter-spacing: var(--type-headline-2-default-letter-spacing);
 }
 
+main .section h1::after,
+main .section h2::after,
+main .section h3::after,
+main .section h4::after,
+main .section h5::after,
+main .section h6::after {
+  border-bottom: var(--shape-border-width-2) solid var(--color-brand-500);
+  padding-top: var(--spacing-small);
+  content: "";
+  display: block;
+  width: 200px;
+}
+
 p,
 dl,
 ol,
