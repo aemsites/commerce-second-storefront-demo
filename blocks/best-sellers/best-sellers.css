@@ -30,6 +30,7 @@
 }
 
 .best-sellers .wide-card .card-image {
+  border: var(--shape-border-width-1) solid var(--color-neutral-200);
   align-self: stretch;
   flex: 1;
   box-sizing: border-box;
@@ -44,7 +45,7 @@
 .best-sellers .wide-card .card-info {
   background-color: var(--color-neutral-200);
   box-sizing: border-box;
-  padding: var(--spacing-small) var(--spacing-medium);
+  padding: var(--spacing-medium);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
