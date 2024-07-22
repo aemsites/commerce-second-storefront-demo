@@ -56,4 +56,3 @@ query getCountries {
     }
   }
 `,Fe=async()=>F(Le,{method:"GET",cache:"no-cache"}).then(({data:e,errors:i})=>(q(i),we(e==null?void 0:e.storeConfig))).catch(U);export{Qe as A,d as B,Ze as C,je as D,Ke as E,Ee as P,ze as S,x as T,me as V,ii as a,ri as b,Ge as c,oi as d,Me as e,F as f,si as g,Fe as h,ye as i,_e as j,_ as k,he as l,Ve as m,ve as n,U as o,q as p,Je as q,ti as r,ei as s,We as t,Xe as u,xe as v,Ye as w,Ie as x,De as y,c as z};
-//# sourceMappingURL=getStoreConfig.js.map

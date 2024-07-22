@@ -68,14 +68,6 @@ import{FetchGraphQL as m}from"@dropins/tools/fetch-graphql.js";class o extends E
           label
           url
         }
-        price_range {
-          maximum_price {
-            regular_price {
-              currency
-              value
-            }
-          }
-        }
       }
       selected_options {
         label
@@ -120,4 +112,3 @@ import{FetchGraphQL as m}from"@dropins/tools/fetch-graphql.js";class o extends E
   }
   ${i}
 `,k=async t=>{var n,u,d;const{data:e,errors:r}=await c(p,{variables:{number:t}});if(r)throw new o(r);const s=(d=(u=(n=e==null?void 0:e.customer)==null?void 0:n.orders)==null?void 0:u.items)==null?void 0:d[0];if(!s)throw new a;return s};export{o as F,y as M,a as O,O as a,b,$ as c,v as d,k as e,c as f,w as g,f as r,_ as s};
-//# sourceMappingURL=customerOrder.js.map

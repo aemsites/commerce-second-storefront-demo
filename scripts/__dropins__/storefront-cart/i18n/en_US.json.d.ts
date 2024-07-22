@@ -17,6 +17,7 @@ declare const _default: {
     "PriceSummary": {
       "taxToBeDetermined": "TBD",
       "checkout": "Checkout",
+      "orderSummary": "Order Summary",
       "estimatedShippingForm": {
         "country": {
           "placeholder": "Country"
@@ -41,7 +42,10 @@ declare const _default: {
       "regularPrice": "Regular Price",
       "sender": "From",
       "file": "{count} file",
-      "files": "{count} files"
+      "files": "{count} files",
+      "lowInventory": "Only {count} left!",
+      "insufficientQuantity": "Only {inventory} of {count} in stock",
+      "insufficientQuantityGeneral": "Not enough items for sale"
     }
   }
 }

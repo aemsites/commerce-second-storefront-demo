@@ -13,4 +13,3 @@ import{M as n,c as e,e as d}from"./transform-shipping-methods.js";import{C as l,
   ${l}
   ${o}
 `,C=async({signal:i,cartId:s,input:t})=>{const{address:a,same_as_shipping:r}=t;if(!s)throw new n;if(!r&&!a)throw new e;return await d({type:"mutation",query:A,options:{signal:i,variables:{cartId:s,input:t}},path:"setBillingAddressOnCart.cart",signalType:"cart",transformer:p})};export{C as s};
-//# sourceMappingURL=setBillingAddress.js.map

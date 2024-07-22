@@ -64,6 +64,10 @@ export interface Item {
     recipientEmail?: string;
     sender?: string;
     senderEmail?: string;
+    lowInventory?: boolean;
+    insufficientQuantity?: boolean;
+    onlyXLeftInStock?: number | null;
+    stockLevel?: String;
 }
 interface ItemError {
     id: string;

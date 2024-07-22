@@ -1,4 +1,4 @@
-import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./getStoreConfig.js";import{S as u,I as n}from"./cart-item.js";const f=e=>{if(e)return{code:e.code,title:e.title}},b=e=>{if(e)return e.filter(t=>!!t).map(t=>{const{code:r,title:a}=t;return{code:r,title:a}})},v=e=>e?!!e.code&&!!e.label:!1,y=e=>{if(!v(e))return;const{code:t,label:r,region_id:a}=e;return a?{code:t,name:r,id:a}:{code:t,name:r}},g=e=>{const{code:t,label:r}=e;return{value:t,label:r}},C=e=>e?"code"in e&&"value"in e:!1,h=e=>e.filter(C).map(t=>{const{code:r,value:a}=t;return{code:r,value:a}}),s=e=>{const t=e.street.filter(Boolean);return{firstName:e.firstname,lastName:e.lastname,company:e.company||void 0,city:e.city,street:t,postCode:e.postcode||void 0,vatId:e.vat_id||void 0,telephone:e.telephone||void 0,region:y(e.region),country:g(e.country),customAttributes:h(e.custom_attributes)}},I=e=>{if(e)return s(e)},S=e=>e.filter(t=>!!t).map(t=>{const{available_shipping_methods:r,selected_shipping_method:a,...o}=t;return{...s(o),availableShippingMethods:d(r),selectedShippingMethod:p(a)}}),x=e=>e?e.filter(Boolean).map(t=>{const{code:r}=t;return{code:r}}):[],E=e=>({coupons:x(e.applied_coupons),availablePaymentMethods:b(e.available_payment_methods),billingAddress:I(e.billing_address),email:e.email??void 0,id:e.id,virtual:e.is_virtual,items:G(e.itemsV2),prices:e.prices,selectedPaymentMethod:f(e.selected_payment_method),shippingAddresses:S(e.shipping_addresses),totalQty:e.total_quantity});function A(e){switch(e){case"SimpleCartItem":return n.Simple;case"ConfigurableCartItem":return n.Configurable;case"DownloadableCartItem":return n.Downloadable;case"GiftCardCartItem":return n.GiftCard;case"VirtualCartItem":return n.Virtual;case"BundleCartItem":return n.Bundle;default:throw new Error(`Unknown item kind: ${e}`)}}function k(e){if(e.__typename!=="ConfigurableCartItem")return;const t={};for(const r of e.configurable_options)t[r.option_label]=r.value_label;return t}function w(e){if(!("customizable_options"in e))return;const t={};for(const r of e.customizable_options)t[r.label]=r.values.map(a=>a.label||a.value).join(", ");return t}function M(e){var i,l;const r=e.__typename==="ConfigurableCartItem"?(i=e.configured_variant)==null?void 0:i.thumbnail:(l=e.product)==null?void 0:l.thumbnail;if(!r||!r.url)return;const a={src:r.url},o=String(r.label||e.product.name);return o!==""&&(a.alt=o),a}function D(e){var t,r;return{kind:A(e.__typename),name:e.product.name,quantity:e.quantity,sku:e.product.sku,uid:e.uid,url:(t=e.product)==null?void 0:t.url_key,image:M(e),price:{value:e.prices.price.value,currency:e.prices.price.currency},priceInclTax:{value:e.prices.price_including_tax.value,currency:e.prices.price_including_tax.currency},total:{value:e.prices.row_total.value,currency:e.prices.row_total.currency},totalInclTax:{value:e.prices.row_total_including_tax.value,currency:e.prices.row_total_including_tax.currency},discount:{value:e.prices.total_item_discount.value,currency:e.prices.total_item_discount.currency},regularPrice:{value:e.product.price_range.maximum_price.regular_price.value,currency:e.product.price_range.maximum_price.regular_price.currency},discounted:e.product.price_range.maximum_price.regular_price.value*e.quantity!==e.prices.row_total.value,stockStatus:e.product.stock_status===m.OutOfStock?u.OutOfStock:u.InStock,configurableOptions:k(e),customizableOptions:w(e),links:e.__typename==="DownloadableCartItem"?(r=e.links)==null?void 0:r.map(a=>a==null?void 0:a.title):void 0,onlyXLeftInStock:e.product.only_x_left_in_stock,senderName:e.__typename==="GiftCardCartItem"?e.sender_name:void 0,senderEmail:e.__typename==="GiftCardCartItem"?e.sender_email:void 0,recipientEmail:e.__typename==="GiftCardCartItem"?e.recipient_email:void 0,recipientName:e.__typename==="GiftCardCartItem"?e.recipient_name:void 0,message:e.__typename==="GiftCardCartItem"?e.message:void 0}}function z(e){return e.filter(Boolean).map(t=>D(t))}function G(e){return e?z(e.items):[]}const c=`
+import{t as _,g as m}from"./transform-shipping-methods.js";import{P as p}from"./getStoreConfig.js";import{S as s,I as n}from"./cart-item.js";const f=e=>{if(e)return{code:e.code,title:e.title}},b=e=>{if(e)return e.filter(t=>!!t).map(t=>{const{code:r,title:a}=t;return{code:r,title:a}})},v=e=>e?!!e.code&&!!e.label:!1,y=e=>{if(!v(e))return;const{code:t,label:r,region_id:a}=e;return a?{code:t,name:r,id:a}:{code:t,name:r}},g=e=>{const{code:t,label:r}=e;return{value:t,label:r}},C=e=>e?"code"in e&&"value"in e:!1,h=e=>e.filter(C).map(t=>{const{code:r,value:a}=t;return{code:r,value:a}}),u=e=>{const t=e.street.filter(Boolean);return{firstName:e.firstname,lastName:e.lastname,company:e.company||void 0,city:e.city,street:t,postCode:e.postcode||void 0,vatId:e.vat_id||void 0,telephone:e.telephone||void 0,region:y(e.region),country:g(e.country),customAttributes:h(e.custom_attributes)}},I=e=>{if(e)return u(e)},S=e=>e.filter(t=>!!t).map(t=>{const{available_shipping_methods:r,selected_shipping_method:a,...o}=t;return{...u(o),availableShippingMethods:_(r),selectedShippingMethod:m(a)}}),A=e=>e?e.filter(Boolean).map(t=>{const{code:r}=t;return{code:r}}):[],R=e=>({coupons:A(e.applied_coupons),availablePaymentMethods:b(e.available_payment_methods),billingAddress:I(e.billing_address),email:e.email??void 0,id:e.id,virtual:e.is_virtual,items:G(e.itemsV2),prices:e.prices,selectedPaymentMethod:f(e.selected_payment_method),shippingAddresses:S(e.shipping_addresses),totalQty:e.total_quantity});function k(e){switch(e){case"SimpleCartItem":return n.Simple;case"ConfigurableCartItem":return n.Configurable;case"DownloadableCartItem":return n.Downloadable;case"GiftCardCartItem":return n.GiftCard;case"VirtualCartItem":return n.Virtual;case"BundleCartItem":return n.Bundle;default:throw new Error(`Unknown item kind: ${e}`)}}function x(e){if(e.__typename!=="ConfigurableCartItem")return;const t={};for(const r of e.configurable_options)t[r.option_label]=r.value_label;return t}function w(e){if(!("customizable_options"in e))return;const t={};for(const r of e.customizable_options)t[r.label]=r.values.map(a=>a.label||a.value).join(", ");return t}function D(e){var l,i;const r=e.__typename==="ConfigurableCartItem"?(l=e.configured_variant)==null?void 0:l.thumbnail:(i=e.product)==null?void 0:i.thumbnail;if(!r||!r.url)return;const a={src:r.url},o=String(r.label||e.product.name);return o!==""&&(a.alt=o),a}function M(e){var t,r;return{kind:k(e.__typename),name:e.product.name,quantity:e.quantity,sku:e.product.sku,uid:e.uid,url:(t=e.product)==null?void 0:t.url_key,image:D(e),price:{value:e.prices.price.value,currency:e.prices.price.currency},priceInclTax:{value:e.prices.price_including_tax.value,currency:e.prices.price_including_tax.currency},total:{value:e.prices.row_total.value,currency:e.prices.row_total.currency},totalInclTax:{value:e.prices.row_total_including_tax.value,currency:e.prices.row_total_including_tax.currency},discount:{value:e.prices.total_item_discount.value,currency:e.prices.total_item_discount.currency},regularPrice:{value:10,currency:"USD"},discounted:!1,stockStatus:e.product.stock_status===p.OutOfStock?s.OutOfStock:s.InStock,configurableOptions:x(e),customizableOptions:w(e),links:e.__typename==="DownloadableCartItem"?(r=e.links)==null?void 0:r.map(a=>a==null?void 0:a.title):void 0,onlyXLeftInStock:e.product.only_x_left_in_stock,senderName:e.__typename==="GiftCardCartItem"?e.sender_name:void 0,senderEmail:e.__typename==="GiftCardCartItem"?e.sender_email:void 0,recipientEmail:e.__typename==="GiftCardCartItem"?e.recipient_email:void 0,recipientName:e.__typename==="GiftCardCartItem"?e.recipient_name:void 0,message:e.__typename==="GiftCardCartItem"?e.message:void 0}}function z(e){return e.filter(Boolean).map(t=>M(t))}function G(e){return e?z(e.items):[]}const c=`
   fragment CartData on Cart {
     is_virtual
     email
@@ -115,7 +115,7 @@ import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./
       }
     }
   }
-`,_=`
+`,d=`
   fragment CartSummaryItems on Cart {
     total_quantity
     itemsV2(sort: { field: CREATED_AT, order: DESC }) {
@@ -128,21 +128,12 @@ import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./
           uid
           name
           sku
-          url_key
           thumbnail {
             url
             label
           }
           small_image {
             url
-          }
-          price_range {
-            maximum_price {
-              regular_price {
-                currency
-                value
-              }
-            }
           }
           stock_status
           only_x_left_in_stock
@@ -250,7 +241,7 @@ import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./
       }
     }
   }
-`,R=`
+`,V=`
   query getCart($cartId: String!) {
     cart(cart_id: $cartId) {
       id
@@ -259,8 +250,8 @@ import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./
     }
   }
   ${c}
-  ${_}
-`,V=`
+  ${d}
+`,q=`
   query getCustomerCart {
     cart: customerCart {
       id
@@ -269,6 +260,5 @@ import{t as d,g as p}from"./transform-shipping-methods.js";import{P as m}from"./
     }
   }
   ${c}
-  ${_}
-`;export{c as C,_ as a,V as b,R as g,E as t};
-//# sourceMappingURL=getCart.graphql.js.map
+  ${d}
+`;export{c as C,d as a,q as b,V as g,R as t};
