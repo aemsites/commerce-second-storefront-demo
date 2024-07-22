@@ -12,7 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
+:root, .dropin-design {
   /* Adobe Commerce Dropin design tokens */
   --color-brand-300: #7A6AFD;
   --color-brand-500: #6338EE;
