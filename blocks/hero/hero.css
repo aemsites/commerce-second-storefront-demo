@@ -62,7 +62,6 @@ main .hero-container {
   box-sizing: border-box;
   max-width: 500px;
   width: 100%;
-  opacity: 90%;
 }
 
 .hero .button-container a.button {

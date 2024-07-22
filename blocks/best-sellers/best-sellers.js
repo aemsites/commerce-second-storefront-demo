@@ -1,4 +1,3 @@
-import htm from '../../scripts/htm.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 /**
