@@ -12,7 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
+:root, .dropin-design {
   /* Adobe Commerce Dropin design tokens */
   --color-brand-300: #FABEC0;
   --color-brand-500: #F37970;
@@ -224,6 +224,30 @@ h6 {
   letter-spacing: var(--type-headline-2-default-letter-spacing);
 }
 
+main .section h1::after,
+main .section h2::after,
+main .section h3::after,
+main .section h4::after,
+main .section h5::after,
+main .section h6::after {
+  border-bottom: var(--shape-border-width-2) solid var(--color-brand-500);
+  padding-top: var(--spacing-small);
+  content: "";
+  display: block;
+  width: 200px;
+}
+
+main .section .dropin-design h1::after,
+main .section .dropin-design h2::after,
+main .section .dropin-design h3::after,
+main .section .dropin-design h4::after,
+main .section .dropin-design h5::after,
+main .section .dropin-design h6::after {
+  border: 0 none;
+  padding-top: 0;
+  width: auto;
+}
+
 p,
 dl,
 ol,
@@ -382,12 +406,12 @@ main img {
 
 /* sections */
 main .section {
-  padding: var(--spacing-large) var(--spacing-small);
+  padding: var(--spacing-medium) var(--spacing-small);
 }
 
 @media (width >=600px) {
   main .section {
-    padding: var(--spacing-large) var(--spacing-big);
+    padding: var(--spacing-medium) var(--spacing-big);
   }
 }
 
