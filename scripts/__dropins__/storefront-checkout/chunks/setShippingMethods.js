@@ -16,4 +16,3 @@ import{M as s,e as a}from"./transform-shipping-methods.js";import{C as p,a as r,
   ${p}
   ${r}
 `,d=async({cartId:t,shippingMethods:i})=>{if(!t)throw new s;return a({type:"mutation",query:o,options:{variables:{cartId:t,shippingMethods:i}},path:"setShippingMethodsOnCart.cart",signalType:"cart",transformer:n})};export{d as s};
-//# sourceMappingURL=setShippingMethods.js.map
