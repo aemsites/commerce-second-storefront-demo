@@ -1,4 +1,3 @@
-import htm from '../../scripts/htm.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 /**
@@ -15,8 +14,6 @@ export default function decorate(block) {
     if (divElement.textContent.trim().toLowerCase() === 'product') {
       if (divElements[index + 1]) {
         product = divElements[index + 1].textContent.trim();
-      } else {
-        console.log('No product value found.');
       }
     }
   });

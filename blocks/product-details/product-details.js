@@ -115,7 +115,6 @@ export default async function decorate(block) {
   const [product, placeholders] = await Promise.all([
     window.getProductPromise, fetchPlaceholders()]);
 
-  console.log(product, placeholders);
   if (!product) {
     await errorGettingProduct();
     return Promise.reject();
