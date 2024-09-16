@@ -29,12 +29,21 @@ export default function decorate(block) {
       picture.lastElementChild.width = '1000';
       picture.lastElementChild.height = '1000';
 
+      // Convert hard-coded product name to product URL
+      const urlKey = item.name.toLowerCase().replace(/\s+/g, '-');
+      const productUrl = `/products/${urlKey}/${item.sku}`;
       const createdCard = document.createElement('div');
       createdCard.classList.add('wide-card');
       createdCard.innerHTML = `
-        <div class="card-image">${picture.outerHTML}</div>
+        <div class="card-image">
+          <a href="${productUrl}">
+            ${picture.outerHTML}
+          </a>
+        </div>
         <div class="card-info">
-          <h2>${item.name}</h2>
+          <a href="${productUrl}">
+            <h2>${item.name}</h2>
+          </a>
           <p class="card-item-sku">${item.sku}</p>
           <p class="card-item-description">${item.description}</p>
 

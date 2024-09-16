@@ -11,7 +11,11 @@ https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Pre-requisites
 
-Out of the box, this project template uses a pre-configured Adobe Commerce environment. If you want to use your own Adobe Commerce environment, you'll need to update the `configs.xlsx` file in your content repository to have values that match your environment.
+The `configs.xlsx` file is set up to connect to the following API Mesh for the Core SaaS Stage environment. Please ensure you are connected to **one of the following Adobe VPNs (Bangalore, Lehi, San Jose, or Virginia)** to access the API Mesh APIs for the Core SaaS Stage environments.
+
+1. Core GraphQL: https://edge-stage-graph.adobe.io/api/d303dcc6-91da-44b7-8636-319760aa83c1/graphql
+1. Catalog GraphQL: https://edge-stage-graph.adobe.io/api/2ac5578e-5ad1-44af-bfe2-2dc06453df61/graphql
+1. Commerce Admin: https://na1-ccsaas-service-stg.commerce-core-saas.com/BBZzsyUF4zCHzZezSMkpjH/admin/
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 

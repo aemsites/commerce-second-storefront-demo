@@ -142,13 +142,6 @@ fragment CartFragment on Cart {
         }
         ${p}
       }
-      ... on DownloadableCartItem {
-        links {
-          sort_order
-          title
-        }
-        ${p}
-      }
       ... on BundleCartItem {
         bundle_options {
           uid
