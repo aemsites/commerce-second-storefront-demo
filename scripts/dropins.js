@@ -14,17 +14,21 @@ import { initializers } from '@dropins/tools/initializer.js';
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
 
+// Recaptcha
+import * as recaptcha from '@dropins/tools/recaptcha.js';
+
 // Libs
 import { getConfigValue, getCookie } from './configs.js';
 
-const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
+export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 
 export default async function initializeDropins() {
   events.enableLogger(true);
 
   // Set Fetch Endpoint (Global)
   setEndpoint(await getConfigValue('commerce-core-endpoint'));
-
+  // Recaptcha
+  recaptcha.setConfig();
   // Initializers (Global)
   initializers.register(authApi.initialize, {});
   initializers.register(cartApi.initialize, {});
