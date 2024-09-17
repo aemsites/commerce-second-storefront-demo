@@ -31,7 +31,7 @@ main .hero-container {
   padding: var(--spacing-xxbig);
 }
 
-.hero-image h2:after {
+.hero-image h2::after {
   border: 0 none !important;
 }
 

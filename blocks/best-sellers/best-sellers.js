@@ -1,6 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-
 /**
  * loads and decorates best-sellers
  * @param {Element} block The best-sellers block element
@@ -16,8 +15,6 @@ export default function decorate(block) {
     if (divElement.textContent.trim().toLowerCase() === 'product') {
       if (divElements[index + 1]) {
         product = divElements[index + 1].textContent.trim();
-      } else {
-        console.log('No product value found.');
       }
     }
   });

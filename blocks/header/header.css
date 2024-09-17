@@ -261,6 +261,10 @@ header nav .nav-sections ul > li > ul > li {
     cursor: pointer;
   }
 
+  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+    padding: 8px 0;
+  }
+
   header nav .nav-sections .default-content-wrapper > ul > li:first-child {
     text-transform: uppercase;
     padding-right: 100%;
@@ -293,10 +297,6 @@ header nav .nav-sections ul > li > ul > li {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid var(--color-neutral-100);
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
-    padding: 8px 0;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li > a {
