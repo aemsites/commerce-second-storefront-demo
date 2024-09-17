@@ -1,15 +1,13 @@
-import{M as e,b as r,e as n}from"./transform-shipping-methods.js";import{C as s,a as o,t as i}from"./getCart.graphql.js";import"./getStoreConfig.js";const m=`
+import{k as e,M as r,b as n,l as s}from"./fixtures.js";import{C as o,t as i}from"./getCart.graphql.js";const m=`
   mutation setPaymentMethod($cartId: String!, $paymentMethod: String!) {
     setPaymentMethodOnCart(
       input: { cart_id: $cartId, payment_method: { code: $paymentMethod } }
     ) {
       cart {
         id
-        ...CartData
-        ...CartSummaryItems
+        ...CheckoutData
       }
     }
   }
-  ${s}
   ${o}
-`,y=async({cartId:t,paymentMethod:a})=>{if(!t)throw new e;if(!a)throw new r;return await n({type:"mutation",query:m,options:{variables:{cartId:t,paymentMethod:a}},path:"setPaymentMethodOnCart.cart",signalType:"cart",transformer:i})};export{y as s};
+`,h=async t=>{const a=e.cartId;if(!a)throw new r;if(!t)throw new n;return await s({type:"mutation",query:m,options:{variables:{cartId:a,paymentMethod:t}},path:"setPaymentMethodOnCart.cart",signalType:"cart",transformer:i})};export{h as s};
