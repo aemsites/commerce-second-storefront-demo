@@ -1,15 +1,16 @@
-import{a as s,b as p,M as u,c as _}from"./getMultilineValues.js";import"./getStoreConfig.js";import{e as A}from"./transform-shipping-methods.js";import{C as m,a as I,t as g}from"./getCart.graphql.js";import"@dropins/tools/event-bus.js";const C=/^\d+$/,T=t=>{if(C.test(t))return parseInt(t,10)},y=`
-  mutation setShippingAddress($cartId: String!, $address: CartAddressInput!) {
+import{a as s,b as p,M as u,c as _}from"./getMultilineValues.js";import{k as g,M as I,l}from"./fixtures.js";import{C,t as h}from"./getCart.graphql.js";import"@dropins/tools/event-bus.js";const A=/^\d+$/,T=t=>{if(A.test(t))return parseInt(t,10)},m=`
+  mutation setShippingAddress($cartId: String!, $address: CartAddressInput!, $pickup_location_code: String) {
     setShippingAddressesOnCart(
-      input: { cart_id: $cartId, shipping_addresses: [{ address: $address }] }
+      input: {
+       cart_id: $cartId,
+       shipping_addresses: [{ address: $address, pickup_location_code: $pickup_location_code }]
+      }
     ) {
       cart {
         id
-        ...CartData
-        ...CartSummaryItems
+        ...CheckoutData
       }
     }
   }
-  ${m}
-  ${I}
-`,S=["city","company","country_code","firstname","lastname","postcode","region","region_id","save_in_address_book","street","telephone","vat_id"],N=t=>{const a={city:t[s.City],company:t[s.Company],country_code:t[s.Country],firstname:t[s.FirstName],lastname:t[s.LastName],postcode:t[s.PostCode],save_in_address_book:!0,street:p(s.Street,t),telephone:t[s.Telephone],vat_id:t[s.Vat]},n=t[s.Region],d=T(n);d?a.region_id=d:a.region=n;const c=Object.keys(t).filter(e=>!e.startsWith("street")).filter(e=>!S.includes(e)).filter(e=>e!=="country_id").map(e=>{const[r,i]=e.split(u);if(!i)return{attribute_code:r,value:t[e]};const o=p(r,t).join(_);return{attribute_code:r,value:o}}).filter((e,r,i)=>r===i.findIndex(o=>o.attribute_code===e.attribute_code));return c.length>0&&(a.custom_attributes=c),a},v=async({signal:t,cartId:a,address:n})=>await A({type:"mutation",query:y,options:{signal:t,variables:{cartId:a,address:n}},path:"setShippingAddressesOnCart.cart",signalType:"cart",transformer:g});export{S,N as p,v as s};
+  ${C}
+`,y=["city","company","country_code","firstname","lastname","postcode","region","region_id","save_in_address_book","street","telephone","vat_id"],$=t=>{const a={city:t[s.City],company:t[s.Company],country_code:t[s.Country],firstname:t[s.FirstName],lastname:t[s.LastName],postcode:t[s.PostCode],save_in_address_book:!0,street:p(s.Street,t),telephone:t[s.Telephone],vat_id:t[s.Vat]},r=t[s.Region],c=T(r);c?a.region_id=c:a.region=r;const d=Object.keys(t).filter(e=>!e.startsWith("street")).filter(e=>!y.includes(e)).filter(e=>e!=="country_id").map(e=>{const[n,i]=e.split(u);if(!i)return{attribute_code:n,value:t[e]};const o=p(n,t).join(_);return{attribute_code:n,value:o}}).filter((e,n,i)=>n===i.findIndex(o=>o.attribute_code===e.attribute_code));return d.length>0&&(a.custom_attributes=d),a},k=async({signal:t,...a})=>{const r=g.cartId;if(!r)throw new I;return await l({type:"mutation",query:m,options:{signal:t,variables:{cartId:r,...a}},path:"setShippingAddressesOnCart.cart",signalType:"cart",transformer:h})};export{y as S,$ as p,k as s};
