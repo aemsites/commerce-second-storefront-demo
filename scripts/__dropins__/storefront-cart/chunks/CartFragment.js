@@ -101,7 +101,7 @@ fragment CartFragment on Cart {
         code
         message
       }
-
+      
       prices {
         price {
           value
@@ -135,7 +135,7 @@ fragment CartFragment on Cart {
           currency
         }
       }
-
+  
       product {
         name
         sku
@@ -150,7 +150,7 @@ fragment CartFragment on Cart {
           url_key
         }
         only_x_left_in_stock
-        stock_status
+        stock_status                  
         ${T}
       }
       ...on SimpleCartItem {
