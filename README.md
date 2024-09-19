@@ -5,17 +5,12 @@ This project boilerplate is for Edge Delivery Services projects that integrate w
 https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Environments
-
-- Preview: https://main--my-second-storefront-demo--oscarmerino.hlx.page/
-- Live: https://main--my-second-storefront-demo--oscarmerino.hlx.live/
+- Preview: https://main--{repo}--{owner}.aem.page/
+- Live: https://main--{repo}--{owner}.aem.live/
 
 ## Pre-requisites
 
-The `configs.xlsx` file is set up to connect to the following API Mesh for the Core SaaS Stage environment. Please ensure you are connected to **one of the following Adobe VPNs (Bangalore, Lehi, San Jose, or Virginia)** to access the API Mesh APIs for the Core SaaS Stage environments.
-
-1. Core GraphQL: https://edge-stage-graph.adobe.io/api/d6a45b5f-bd32-4568-8f02-6f9103fd6a0d/graphql
-1. Catalog GraphQL: https://edge-stage-graph.adobe.io/api/e086a3ae-773b-4353-bf07-4ea898978612/graphql
-1. Commerce Admin: https://na1-ccsaas-service-stg.commerce-core-saas.com/NCiHtpra6LdtVdtsL33Rzy/admin/
+Out of the box, this project template uses a pre-configured Adobe Commerce environment. If you want to use your own Adobe Commerce environment, you'll need to update the `configs.xlsx` file in your content repository to have values that match your environment.
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 
