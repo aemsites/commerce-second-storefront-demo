@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
+import { getCartDataFromCache } from '@dropins/storefront-cart/api.js';
 import {
   buildBlock,
   decorateBlocks,
@@ -7,30 +8,22 @@ import {
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
-  loadBlocks,
-  loadCSS,
   loadFooter,
   loadHeader,
-  sampleRUM,
-  waitForLCP,
   getMetadata,
   loadScript,
   toCamelCase,
   toClassName,
   readBlockConfig,
+  waitForFirstImage,
+  loadSection,
+  loadSections,
+  loadCSS,
+  sampleRUM,
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
-
-const LCP_BLOCKS = [
-  'product-list-page',
-  'product-list-page-custom',
-  'product-details',
-  'commerce-cart',
-  'commerce-checkout',
-  'commerce-account',
-  'commerce-login',
-]; // add your LCP blocks to the list
+import { loadFragment } from '../blocks/fragment/fragment.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -114,6 +107,79 @@ function buildAutoBlocks(main) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Decorate Columns Template to the main element.
+ * @param {Element} main The container element
+ */
+function buildTemplateColumns(doc) {
+  const columns = doc.querySelectorAll('main > div.section[data-column-width]');
+
+  columns.forEach((column) => {
+    const columnWidth = column.getAttribute('data-column-width');
+    const gap = column.getAttribute('data-gap');
+
+    if (columnWidth) {
+      column.style.setProperty('--column-width', columnWidth);
+      column.removeAttribute('data-column-width');
+    }
+
+    if (gap) {
+      column.style.setProperty('--gap', `var(--spacing-${gap.toLocaleLowerCase()})`);
+      column.removeAttribute('data-gap');
+    }
+  });
+}
+
+async function buildTemplateCart(doc) {
+  const main = doc.querySelector('main');
+
+  // load fragment for empty cart
+  const emptyCartMeta = getMetadata('empty-cart');
+  const emptyCartPath = emptyCartMeta ? new URL(emptyCartMeta, window.location).pathname : '/empty-cart';
+  const emptyCartFragment = await loadFragment(emptyCartPath);
+
+  // append emptyCartFragment next to main
+  main.after(emptyCartFragment);
+
+  const hasProducts = getCartDataFromCache()?.totalQuantity > 0 || false;
+
+  // toggle view based on cart data
+  function toggleView(next) {
+    if (next) {
+      emptyCartFragment.setAttribute('hidden', 'hidden');
+      main.removeAttribute('hidden');
+    } else {
+      main.setAttribute('hidden', 'hidden');
+      emptyCartFragment.removeAttribute('hidden');
+    }
+  }
+
+  // initial state (cached)
+  toggleView(hasProducts);
+
+  // update state on cart data event
+  let prev = hasProducts;
+
+  events.on('cart/data', (payload) => {
+    const next = payload?.totalQuantity > 0 || false;
+
+    if (next !== prev) {
+      prev = next;
+      toggleView(next);
+    }
+  }, { eager: true });
+}
+
+async function applyTemplates(doc) {
+  if (doc.body.classList.contains('columns')) {
+    buildTemplateColumns(doc);
+  }
+
+  if (doc.body.classList.contains('cart')) {
+    await buildTemplateCart(doc);
   }
 }
 
@@ -213,6 +279,9 @@ async function loadEager(doc) {
       minXOffset: 0,
       minYOffset: 0,
     },
+    shoppingCartContext: {
+      totalQuantity: 0,
+    },
   });
   if (pageType !== 'Product') {
     window.adobeDataLayer.push((dl) => {
@@ -222,12 +291,20 @@ async function loadEager(doc) {
 
   const main = doc.querySelector('main');
   if (main) {
+    // Main Decorations
     decorateMain(main);
+
+    // Template Decorations
+    await applyTemplates(doc);
+
+    // Load LCP blocks
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   events.emit('eds/lcp', true);
+
+  sampleRUM.enhance();
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -247,7 +324,7 @@ async function loadLazy(doc) {
   autolinkModals(doc);
 
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -267,10 +344,6 @@ async function loadLazy(doc) {
 
   trackHistory();
 
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
-
   // Implement experimentation preview pill
   if ((getMetadata('experiment')
     || Object.keys(getAllMetadata('campaign')).length
@@ -279,6 +352,8 @@ async function loadLazy(doc) {
     const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
     await runLazy(document, { audiences: AUDIENCES }, pluginContext);
   }
+  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadFonts();
 }
 
 /**
