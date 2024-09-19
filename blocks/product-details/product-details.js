@@ -2,58 +2,69 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
+import {
+  InLineAlert,
+  Icon,
+  provider as UI,
+} from '@dropins/tools/components.js';
 import * as productApi from '@dropins/storefront-pdp/api.js';
 import { render as productRenderer } from '@dropins/storefront-pdp/render.js';
 import { addProductsToCart } from '@dropins/storefront-cart/api.js';
 import ProductDetails from '@dropins/storefront-pdp/containers/ProductDetails.js';
 
 // Libs
-import { getProduct, getSkuFromUrl, setJsonLd } from '../../scripts/commerce.js';
+import {
+  getProduct,
+  getSkuFromUrl,
+  setJsonLd,
+  loadErrorPage,
+} from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
 import { fetchPlaceholders } from '../../scripts/aem.js';
 
-// Error Handling (404)
-async function errorGettingProduct(code = 404) {
-  const htmlText = await fetch(`/${code}.html`).then((response) => {
-    if (response.ok) {
-      return response.text();
-    }
-    throw new Error(`Error getting ${code} page`);
-  });
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlText, 'text/html');
-  document.body.innerHTML = doc.body.innerHTML;
-  document.head.innerHTML = doc.head.innerHTML;
-}
-
 async function setJsonLdProduct(product) {
   const {
-    name, inStock, description, sku, urlKey, price, priceRange, images, attributes,
+    name,
+    inStock,
+    description,
+    sku,
+    urlKey,
+    price,
+    priceRange,
+    images,
+    attributes,
   } = product;
   const amount = priceRange?.minimum?.final?.amount || price?.final?.amount;
   const brand = attributes.find((attr) => attr.name === 'brand');
 
-  setJsonLd({
-    '@context': 'http://schema.org',
-    '@type': 'Product',
-    name,
-    description,
-    image: images[0]?.url,
-    offers: [{
-      '@type': 'http://schema.org/Offer',
-      price: amount?.value,
-      priceCurrency: amount?.currency,
-      availability: inStock ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
-    }],
-    productID: sku,
-    brand: {
-      '@type': 'Brand',
-      name: brand?.value,
+  setJsonLd(
+    {
+      '@context': 'http://schema.org',
+      '@type': 'Product',
+      name,
+      description,
+      image: images[0]?.url,
+      offers: [
+        {
+          '@type': 'http://schema.org/Offer',
+          price: amount?.value,
+          priceCurrency: amount?.currency,
+          availability: inStock
+            ? 'http://schema.org/InStock'
+            : 'http://schema.org/OutOfStock',
+        },
+      ],
+      productID: sku,
+      brand: {
+        '@type': 'Brand',
+        name: brand?.value,
+      },
+      url: new URL(`/products/${urlKey}/${sku}`, window.location),
+      sku,
+      '@id': new URL(`/products/${urlKey}/${sku}`, window.location),
     },
-    url: new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
-    sku,
-    '@id': new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
-  }, 'product');
+    'product',
+  );
 }
 
 function createMetaTag(property, content, type) {
@@ -85,7 +96,8 @@ function setMetaTags(product) {
   }
 
   const price = product.priceRange
-    ? product.priceRange.minimum.final.amount : product.price.final.amount;
+    ? product.priceRange.minimum.final.amount
+    : product.price.final.amount;
 
   createMetaTag('title', product.metaTitle, 'name');
   createMetaTag('description', product.metaDescription, 'name');
@@ -101,10 +113,6 @@ function setMetaTags(product) {
   createMetaTag('og:image:secure_url', metaImage, 'property');
   createMetaTag('og:product:price:amount', price.value, 'property');
   createMetaTag('og:product:price:currency', price.currency, 'property');
-
-  createMetaTag('twitter:card', product.shortDescription, 'name');
-  createMetaTag('twitter:title', product.metaTitle, 'name');
-  createMetaTag('twitter:image', metaImage, 'name');
 }
 
 export default async function decorate(block) {
@@ -113,10 +121,12 @@ export default async function decorate(block) {
   }
 
   const [product, placeholders] = await Promise.all([
-    window.getProductPromise, fetchPlaceholders()]);
+    window.getProductPromise,
+    fetchPlaceholders(),
+  ]);
 
   if (!product) {
-    await errorGettingProduct();
+    await loadErrorPage();
     return Promise.reject();
   }
 
@@ -185,73 +195,112 @@ export default async function decorate(block) {
     'x-api-key': await getConfigValue('commerce-x-api-key'),
   });
 
-  events.on('eds/lcp', () => {
-    if (!product) {
-      return;
-    }
+  events.on(
+    'eds/lcp',
+    () => {
+      if (!product) {
+        return;
+      }
 
-    setJsonLdProduct(product);
-    setMetaTags(product);
-    document.title = product.name;
-  }, { eager: true });
+      setJsonLdProduct(product);
+      setMetaTags(product);
+      document.title = product.name;
+    },
+    { eager: true },
+  );
+
+  // Alert Message Wrapper
+  const alertWrapper = document.createElement('div');
+  alertWrapper.classList.add('product-details__alert');
+  block.appendChild(alertWrapper);
+  let inlineAlert;
+
+  // PDP Wrapper
+  const pdpWrapper = document.createElement('div');
+  block.appendChild(pdpWrapper);
 
   // Render Containers
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      try {
-        await productRenderer.render(ProductDetails, {
-          sku: getSkuFromUrl(),
-          carousel: {
-            controls: 'thumbnailsColumn',
-            arrowsOnMainImage: true,
-            mobile: true,
-            peak: {
-              mobile: true,
-              desktop: false,
-            },
-            gap: 'small',
-          },
-          slots: {
-            Actions: (ctx) => {
-              // Add to Cart Button
-              ctx.appendButton((next, state) => {
-                const adding = state.get('adding');
-                return {
-                  text: adding
-                    ? next.dictionary.Custom.AddingToCart?.label
-                    : next.dictionary.PDP.Product.AddToCart?.label,
-                  icon: 'Cart',
-                  variant: 'primary',
-                  disabled: adding || !next.data.inStock,
-                  onClick: async () => {
-                    try {
-                      state.set('adding', true);
-                      if (!next.valid) {
-                        // eslint-disable-next-line no-console
-                        console.warn('Invalid product', next.values);
-                        return;
-                      }
+  try {
+    return await productRenderer.render(ProductDetails, {
+      sku: getSkuFromUrl(),
+      carousel: {
+        controls: {
+          desktop: 'thumbnailsColumn',
+          mobile: 'thumbnailsRow',
+        },
+        arrowsOnMainImage: true,
+        peak: {
+          mobile: true,
+          desktop: false,
+        },
+        gap: 'small',
+      },
+      slots: {
+        Actions: (ctx) => {
+          // Add to Cart Button
+          ctx.appendButton((next, state) => {
+            const adding = state.get('adding');
+            return {
+              text: adding
+                ? next.dictionary.Custom.AddingToCart?.label
+                : next.dictionary.PDP.Product.AddToCart?.label,
+              icon: 'Cart',
+              variant: 'primary',
+              disabled: adding || !next.data?.inStock || !next.valid,
+              onClick: async () => {
+                try {
+                  state.set('adding', true);
+                  await addProductsToCart([{ ...next.values }]);
+                  // reset any previous alerts if successful
+                  inlineAlert?.remove();
+                } catch (error) {
+                  // add alert message
+                  inlineAlert = await UI.render(InLineAlert, {
+                    heading: 'Error',
+                    description: error.message,
+                    icon: Icon({ source: 'Warning' }),
+                    'aria-live': 'assertive',
+                    role: 'alert',
+                    onDismiss: () => {
+                      inlineAlert.remove();
+                    },
+                  })(alertWrapper);
+                  // Scroll the alertWrapper into view
+                  alertWrapper.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                  });
+                } finally {
+                  state.set('adding', false);
+                }
+              },
+            };
+          });
 
-                      await addProductsToCart([{ ...next.values }]);
-                    } catch (error) {
-                      // eslint-disable-next-line no-console
-                      console.warn('Error adding product to cart', error);
-                    } finally {
-                      state.set('adding', false);
-                    }
-                  },
-                };
-              });
-            },
-          },
-          useACDL: true,
-        })(block);
-      } catch (e) {
-        console.error(e);
-        await errorGettingProduct();
-      } finally {
-        resolve();
-      }
-    }, 0);
-  });
+          ctx.appendButton((next, state) => {
+            const adding = state.get('adding');
+            return ({
+              disabled: adding,
+              icon: 'Heart',
+              variant: 'secondary',
+              onClick: async () => {
+                try {
+                  state.set('adding', true);
+                  const { addToWishlist } = await import('../../scripts/wishlist/api.js');
+                  await addToWishlist(next.values.sku);
+                } finally {
+                  state.set('adding', false);
+                }
+              },
+            });
+          });
+        },
+      },
+      useACDL: true,
+    })(pdpWrapper);
+  } catch (e) {
+    console.error(e);
+    await loadErrorPage();
+  }
+  return undefined;
 }
