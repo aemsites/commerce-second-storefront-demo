@@ -1,5 +1,5 @@
 mountpoints:
-  /: https://adobe.sharepoint.com/:f:/r/sites/MyFirstStorefront/Shared%20Documents/MyFirstStorefront?csf=1&web=1&e=LgGhmz
+  /: https://adobe.sharepoint.com/:f:/r/sites/CommerceFirstStorefront/Shared%20Documents/CommerceFirstStorefront?csf=1&web=1&e=Md3GKL
 
 folders:
   /products/: /products/default
