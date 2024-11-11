@@ -6,16 +6,11 @@ https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Environments
 
-- Preview: https://main--my-first-storefront-demo--OscarMerino.hlx.page/
-- Live: https://main--my-first-storefront-demo--OscarMerino.hlx.live/
+- Preview: https://main--commerce-first-storefront-demo--aemsites.aem.page/
+- Live: https://main--commerce-first-storefront-demo--aemsites.aem.live/gear
 
 ## Pre-requisites
 
-The `configs.xlsx` file is set up to connect to the following API Mesh for the Core SaaS Stage environment. Please ensure you are connected to **one of the following Adobe VPNs (Bangalore, Lehi, San Jose, or Virginia)** to access the API Mesh APIs for the Core SaaS Stage environments.
-
-1. Core GraphQL: https://edge-stage-graph.adobe.io/api/d303dcc6-91da-44b7-8636-319760aa83c1/graphql
-1. Catalog GraphQL: https://edge-stage-graph.adobe.io/api/2ac5578e-5ad1-44af-bfe2-2dc06453df61/graphql
-1. Commerce Admin: https://na1-ccsaas-service-stg.commerce-core-saas.com/BBZzsyUF4zCHzZezSMkpjH/admin/
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 
