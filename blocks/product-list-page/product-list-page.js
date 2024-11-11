@@ -10,7 +10,8 @@ export default async function decorate(block) {
 
   const storeDetails = {
     environmentId: await getConfigValue('commerce-environment-id'),
-    environmentType: (await getConfigValue('commerce-endpoint')).includes('sandbox') ? 'testing' : '',
+    environmentType: (await getConfigValue('commerce-environment')) || '',
+    apiUrl: await getConfigValue('commerce-endpoint'),
     apiKey: await getConfigValue('commerce-x-api-key'),
     websiteCode: await getConfigValue('commerce-website-code'),
     storeCode: await getConfigValue('commerce-store-code'),
@@ -45,7 +46,7 @@ export default async function decorate(block) {
     },
     route: ({ sku, urlKey }) => {
       const a = new URL(window.location.origin);
-      a.pathname = `/products/${urlKey}/${sku}`;
+      a.pathname = `/products/${sku}`;
       return a.toString();
     },
   };
@@ -53,7 +54,6 @@ export default async function decorate(block) {
   if (type !== 'search') {
     storeDetails.config.categoryName = document.querySelector('.default-content-wrapper > h1')?.innerText;
     storeDetails.config.currentCategoryId = category;
-    storeDetails.config.currentCategoryUrlPath = urlpath;
 
     // Enable enrichment
     block.dataset.category = category;

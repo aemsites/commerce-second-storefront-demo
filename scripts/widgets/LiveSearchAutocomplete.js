@@ -2764,7 +2764,7 @@
                 })() || []),
               (this.apiUrl =
                 "testing" === (null == t ? void 0 : t.toLowerCase())
-                  ? "https://edge-stage-graph.adobe.io/api/2ac5578e-5ad1-44af-bfe2-2dc06453df61/graphql"
+                  ? "https://edge-stage-graph.adobe.io/api/2364b3f0-c3df-47ff-bb75-65f2d55973f2/graphql"
                   : "https://edge-stage-graph.adobe.io/api/2ac5578e-5ad1-44af-bfe2-2dc06453df61/graphql"),
               !(e && n && r && o))
             )
