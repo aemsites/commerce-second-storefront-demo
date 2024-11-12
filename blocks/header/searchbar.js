@@ -9,6 +9,7 @@ import { getConfigValue } from '../../scripts/configs.js';
     environmentId: await getConfigValue('commerce-environment-id'),
     environmentType: (await getConfigValue('commerce-environment')) || '',
     apiKey: await getConfigValue('commerce-x-api-key'),
+    apiUrl: await getConfigValue('commerce-endpoint'),
     websiteCode: await getConfigValue('commerce-website-code'),
     storeCode: await getConfigValue('commerce-store-code'),
     storeViewCode: await getConfigValue('commerce-store-view-code'),
