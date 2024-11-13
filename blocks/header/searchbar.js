@@ -28,7 +28,7 @@ import { getConfigValue } from '../../scripts/configs.js';
     context: {
       customerGroup: await getConfigValue('commerce-customer-group'),
     },
-    route: ({ sku, urlKey }) => `/products/${sku}`,
+    route: ({ sku }) => `/products/${sku}`,
     searchRoute: {
       route: '/search',
       query: 'q',

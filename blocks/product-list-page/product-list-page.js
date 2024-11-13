@@ -5,7 +5,7 @@ export default async function decorate(block) {
   // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
   await import('/scripts/widgets/search.js');
 
-  const { category, urlpath, type } = readBlockConfig(block);
+  const { category, type } = readBlockConfig(block);
   block.textContent = '';
 
   const storeDetails = {
@@ -44,7 +44,7 @@ export default async function decorate(block) {
     context: {
       customerGroup: await getConfigValue('commerce-customer-group'),
     },
-    route: ({ sku, urlKey }) => {
+    route: ({ sku }) => {
       const a = new URL(window.location.origin);
       a.pathname = `/products/${sku}`;
       return a.toString();
