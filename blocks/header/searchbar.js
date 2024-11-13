@@ -7,7 +7,7 @@ import { getConfigValue } from '../../scripts/configs.js';
 
   const storeDetails = {
     environmentId: await getConfigValue('commerce-environment-id'),
-    environmentType: (await getConfigValue('commerce-endpoint')).includes('sandbox') ? 'testing' : '',
+    environmentType: (await getConfigValue('commerce-environment')) || '',
     apiKey: await getConfigValue('commerce-x-api-key'),
     apiUrl: await getConfigValue('commerce-endpoint'),
     websiteCode: await getConfigValue('commerce-website-code'),
@@ -28,7 +28,7 @@ import { getConfigValue } from '../../scripts/configs.js';
     context: {
       customerGroup: await getConfigValue('commerce-customer-group'),
     },
-    route: ({ sku, urlKey }) => `/products/${urlKey}/${sku}`,
+    route: ({ sku }) => `/products/${sku}`,
     searchRoute: {
       route: '/search',
       query: 'q',

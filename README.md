@@ -6,16 +6,11 @@ https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Environments
 
-- Preview: https://main--my-second-storefront-demo--oscarmerino.hlx.page/
-- Live: https://main--my-second-storefront-demo--oscarmerino.hlx.live/
+- Preview: https://main--commerce-second-storefront-demo--aemsites.aem.page/
+- Live: https://main--commerce-second-storefront-demo--aemsites.aem.live/
 
 ## Pre-requisites
 
-The `configs.xlsx` file is set up to connect to the following API Mesh for the Core SaaS Stage environment. Please ensure you are connected to **one of the following Adobe VPNs (Bangalore, Lehi, San Jose, or Virginia)** to access the API Mesh APIs for the Core SaaS Stage environments.
-
-1. Core GraphQL: https://edge-stage-graph.adobe.io/api/d6a45b5f-bd32-4568-8f02-6f9103fd6a0d/graphql
-1. Catalog GraphQL: https://edge-stage-graph.adobe.io/api/e086a3ae-773b-4353-bf07-4ea898978612/graphql
-1. Commerce Admin: https://na1-ccsaas-service-stg.commerce-core-saas.com/NCiHtpra6LdtVdtsL33Rzy/admin/
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 
@@ -44,7 +39,7 @@ npm run lint
 1. Add your Adobe Commerce SaaS configuration in the `configs.xlsx` sheet in your content repository.
 1. Install all dependencies using `npm i`.
 1. Start AEM Proxy: `npm run up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}` directory in your favorite IDE and start coding :)
+1. Open the `boilerplate-commerce-dropins` directory in your favorite IDE and start coding :)
 
 ## Changelog
 

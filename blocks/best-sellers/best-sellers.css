@@ -25,6 +25,7 @@
 .best-sellers .wide-card .card-image {
   border: var(--shape-border-width-1) solid var(--color-neutral-200);
   align-self: stretch;
+  flex: 1;
   box-sizing: border-box;
   width: 100%;
   max-width: 200px;
@@ -82,6 +83,10 @@
 
 .best-sellers .card-info .card-item-sku {
   color: var(--color-brand-500);
+}
+
+.best-sellers .card-info .card-item-description {
+  text-align: right;
 }
 
 @media (width <= 1024px) {
