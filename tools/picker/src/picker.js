@@ -9,7 +9,7 @@ import Settings from '@spectrum-icons/workflow/Settings';
 
 
 const Picker = props => {
-    const { blocks, getItems, getCategories, configFiles, defaultConfig } = props;
+    const { blocks, getItems, getCategories, configFile, defaultConfig } = props;
 
     const [state, setState] = useState({
         items: {},
@@ -190,31 +190,17 @@ const Picker = props => {
         }));
     }
 
-    const fetchConfig = async (env) => {
-        const configData = await fetch(configFiles[env]).then(r => r.json());
-        let config = {};
-        configData.data.forEach(e => {
-            config[e.key] = e.value;
-        });
-        return config;
-    }
-
     useEffect(() => {
         (async () => {
-            const selectedConfig = defaultConfig || Object.keys(configFiles)[0];
-
             // Get configs and select default config
             let configs = {};
             try {
-                const promises = await Promise.all(Object.keys(configFiles).map(async key => {
-                    return [key, await fetchConfig(key)];
-                }));
-                configs = Object.fromEntries(promises);
+                configs = await fetch(configFile).then(r => r.json());
             } catch (err) {
                 console.error(err);
                 setState(state => ({
                     ...state,
-                    error: `Could not load ${selectedConfig} config file`,
+                    error: 'Could not load config file',
                 }));
                 return;
             }

@@ -7,17 +7,7 @@ import getProductsInCategory from './queries/products.graphql.js';
 
 import './styles.css';
 
-/**
- * Object containing all configuration files that should be exposed in the picker.
- */
-const configFiles = {
-    'prod': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs.json?sheet=prod',
-    'stage': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs-stage.json',
-    'dev': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs-dev.json',
-}
-/**
- * Default configuration to be loaded.
- */
+const configFile = ' https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs.json';
 const defaultConfig = 'prod';
 
 /**
@@ -193,6 +183,6 @@ if (app) {
         blocks={blocks}
         getCategories={getCategories}
         getItems={getItems}
-        configFiles={configFiles}
+        configFile={configFile}
         defaultConfig={defaultConfig} />, app);
 }
