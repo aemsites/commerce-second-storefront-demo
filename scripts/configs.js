@@ -8,9 +8,9 @@ const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
  * @returns {string} - environment identifier (dev, stage or prod'.
  */
 export const calcEnvironment = () => {
-  const { href } = window.location;
+  const { host, href } = window.location;
   let environment = 'prod';
-  if (href.includes('.aem.page')) {
+  if (href.includes('.aem.page') || host.includes('staging')) {
     environment = 'stage';
   }
   if (href.includes('localhost')) {
@@ -37,29 +37,16 @@ function buildConfigURL(environment) {
 
 const getConfigForEnvironment = async (environment) => {
   const env = environment || calcEnvironment();
-
-  try {
-    const configJSON = window.sessionStorage.getItem(`config:${env}`);
-    if (!configJSON) {
-      throw new Error('No config in session storage');
-    }
-
-    const parsedConfig = JSON.parse(configJSON);
-    if (!parsedConfig[':expiry'] || parsedConfig[':expiry'] < Math.round(Date.now() / 1000)) {
-      throw new Error('Config expired');
-    }
-
-    return parsedConfig;
-  } catch (e) {
-    let configJSON = await fetch(buildConfigURL(env));
+  let configJSON = window.sessionStorage.getItem(`config:${env}`);
+  if (!configJSON) {
+    configJSON = await fetch(buildConfigURL(env));
     if (!configJSON.ok) {
       throw new Error(`Failed to fetch config for ${env}`);
     }
-    configJSON = await configJSON.json();
-    configJSON[':expiry'] = Math.round(Date.now() / 1000) + 7200;
-    window.sessionStorage.setItem(`config:${env}`, JSON.stringify(configJSON));
-    return configJSON;
+    configJSON = await configJSON.text();
+    window.sessionStorage.setItem(`config:${env}`, configJSON);
   }
+  return configJSON;
 };
 
 /**
@@ -71,7 +58,21 @@ const getConfigForEnvironment = async (environment) => {
  */
 export const getConfigValue = async (configParam, environment) => {
   const env = environment || calcEnvironment();
-  const config = await getConfigForEnvironment(env);
-  const configElements = config.data;
+  const configJSON = await getConfigForEnvironment(env);
+  const configElements = JSON.parse(configJSON).data;
   return configElements.find((c) => c.key === configParam)?.value;
+};
+
+export const getCookie = (cookieName) => {
+  const cookies = document.cookie.split(';');
+  let foundValue;
+
+  cookies.forEach((cookie) => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === cookieName) {
+      foundValue = decodeURIComponent(value);
+    }
+  });
+
+  return foundValue;
 };

@@ -1,13 +1,13 @@
 footer {
+  padding: 2rem;
   background-color: var(--color-neutral-100);
   font: var(--type-body-2-default-font);
   letter-spacing: var(--type-body-2-default-letter-spacing);
 }
 
-footer .footer > div {
-  margin: auto;
+footer .footer {
   max-width: 1200px;
-  padding: 40px 24px 24px;
+  margin: auto;
 }
 
 footer .footer p {

@@ -27,10 +27,10 @@ const recommendationsQuery = `query GetRecommendations(
       productsView {
         name
         sku
+        url
         images {
           url
         }
-        urlKey
         externalId
         __typename
       }
@@ -60,6 +60,7 @@ function renderPlaceholder(block) {
 }
 
 function renderItem(unitId, product) {
+  const urlKey = product.url.split('/').pop().replace('.html', '');
   let image = product.images[0]?.url;
   image = image.replace('http://', '//');
 
@@ -70,7 +71,7 @@ function renderItem(unitId, product) {
   };
 
   const item = document.createRange().createContextualFragment(`<div class="product-grid-item">
-    <a href="/products/${product.urlKey}/${product.sku}">
+    <a href="/products/${urlKey}/${product.sku}">
       <picture>
         <source type="image/webp" srcset="${image}?width=300&format=webply&optimize=medium" />
         <img loading="lazy" alt="${product.name}" width="300" height="375" src="${image}?width=300&format=jpg&optimize=medium" />
@@ -116,37 +117,25 @@ function renderItems(block, results) {
         inViewObserver.disconnect();
       }
     });
-  }, { threshold: 0.5 });
+  });
   inViewObserver.observe(block);
 }
 
-const mapProduct = (product, index) => ({
-  rank: index,
-  score: 0,
-  sku: product.sku,
-  name: product.name,
-  productId: parseInt(product.externalId, 10) || 0,
-  type: product.__typename,
-  visibility: undefined,
-  categories: [],
-  weight: 0,
-  image: product.images.length > 0 ? product.images[0].url : undefined,
-  url: new URL(`/products/${product.urlKey}/${product.sku}`, window.location.origin).toString(),
-  queryType: 'primary',
-});
-
 const mapUnit = (unit) => ({
-  unitId: unit.unitId,
-  unitName: unit.unitName,
+  ...unit,
   unitType: 'primary',
   searchTime: 0,
-  totalProducts: unit.totalProducts,
   primaryProducts: unit.totalProducts,
   backupProducts: 0,
-  products: unit.productsView.map(mapProduct),
+  products: unit.productsView.map((product, index) => ({
+    ...product,
+    rank: index,
+    score: 0,
+    productId: parseInt(product.externalId, 10) || 0,
+    type: product.__typename,
+    queryType: 'primary',
+  })),
   pagePlacement: '',
-  typeId: unit.typeId,
-
 });
 
 async function loadRecommendation(block, context, visibility, filters) {
@@ -163,13 +152,8 @@ async function loadRecommendation(block, context, visibility, filters) {
     return;
   }
 
-  const storeViewCode = await getConfigValue('commerce-store-view-code');
-
-  if (unitsPromise) {
-    return;
-  }
-
-  unitsPromise = new Promise((resolve, reject) => {
+  if (!unitsPromise) {
+    const storeViewCode = await getConfigValue('commerce-store-view-code');
     // Get product view history
     try {
       const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
@@ -192,19 +176,16 @@ async function loadRecommendation(block, context, visibility, filters) {
       dl.push({ event: 'recs-api-request-sent', eventInfo: { ...dl.getState() } });
     });
 
-    performCatalogServiceQuery(recommendationsQuery, context).then(({ recommendations }) => {
-      window.adobeDataLayer.push((dl) => {
-        dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
-        dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
-      });
-      resolve(recommendations);
-    }).catch((error) => {
-      console.error('Error fetching recommendations', error);
-      reject(error);
-    });
-  });
+    unitsPromise = performCatalogServiceQuery(recommendationsQuery, context);
+    const { recommendations } = await unitsPromise;
 
-  let { results } = await unitsPromise;
+    window.adobeDataLayer.push((dl) => {
+      dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
+      dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
+    });
+  }
+
+  let { results } = (await unitsPromise).recommendations;
   results = results.filter((unit) => (filters.typeId ? unit.typeId === filters.typeId : true));
 
   renderItems(block, results);
@@ -237,9 +218,7 @@ export default async function decorate(block) {
   }
 
   function handleCartChanges({ shoppingCartContext }) {
-    context.cartSkus = shoppingCartContext?.totalQuantity === 0
-      ? []
-      : shoppingCartContext?.items?.map(({ product }) => product.sku);
+    context.cartSkus = shoppingCartContext?.items?.map(({ product }) => product.sku);
     loadRecommendation(block, context, visibility, filters);
   }
 

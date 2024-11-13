@@ -2,7 +2,7 @@ import { loadScript } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
 (async () => {
-  const widgetProd = '/scripts/widgets/SearchAsYouType.js';
+  const widgetProd = '/scripts/widgets/LiveSearchAutocomplete.js';
   await loadScript(widgetProd);
 
   const storeDetails = {

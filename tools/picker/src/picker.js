@@ -218,7 +218,23 @@ const Picker = props => {
                 }));
                 return;
             }
+            // Ignore metadata
+            Object.keys(configs).forEach(key => {
+                if (key.startsWith(':')) {
+                    delete configs[key];
+                }
+            });
 
+            // Flatten values
+            Object.keys(configs).forEach(key => {
+                const values = {};
+                configs[key].data.forEach(e => {
+                    values[e.key] = e.value;
+                });
+                configs[key] = values;
+            });
+
+            const selectedConfig = defaultConfig || Object.keys(configs)[0];
             const rootCategoryKey = configs[selectedConfig]['commerce-root-category-id'];
 
             setState(state => ({

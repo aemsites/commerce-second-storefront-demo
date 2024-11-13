@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
-import { getConfigValue } from './configs.js';
+import { getConfigValue, getCookie } from './configs.js';
 import { getConsent } from './scripts.js';
 
 /* Common query fragments */
@@ -184,8 +184,7 @@ export async function performCatalogServiceQuery(query, variables) {
 }
 
 export function getSignInToken() {
-  // TODO: Implement in project
-  return '';
+  return getCookie('auth_dropin_user_token');
 }
 
 export async function performMonolithGraphQLQuery(query, variables, GET = true, USE_TOKEN = false) {

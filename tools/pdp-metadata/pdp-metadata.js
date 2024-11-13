@@ -4,7 +4,7 @@ import he from 'he';
 import productSearchQuery from './queries/products.graphql.js';
 import { variantsFragment } from './queries/variants.graphql.js';
 
-const basePath = 'https://www.aemshop.net';
+const basePath = 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live';
 const configFile = `${basePath}/configs.json?sheet=prod`;
 
 
@@ -20,6 +20,9 @@ async function performCatalogServiceQuery(config, query, variables) {
   };
 
   const apiCall = new URL(config['commerce-endpoint']);
+  apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
+    .replace(/\s\s+/g, ' '));
+  apiCall.searchParams.append('variables', variables ? JSON.stringify(variables) : null);
 
   const response = await fetch(apiCall, {
     method: 'POST',
