@@ -21,7 +21,7 @@ export * from './getCartData';
 export * from './initializeCart';
 export * from './updateProductsFromCart';
 export * from './resetCart';
-export * from './createEmptyCart';
+export * from './createGuestCart';
 export * from './getStoreConfig';
 export * from './getEstimateShipping';
 export * from './getEstimatedTotals';

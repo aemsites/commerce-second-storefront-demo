@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{P as e,a as t,G as r,O as a,B as s,R as d}from"./transform-order-details.js";const n=`
+import{P as e,a as t,G as r,O as a,B as s,R as d}from"./transform-order-details.js";const i=`
 fragment OrderSummary on OrderTotal {
   grand_total {
     value
@@ -37,7 +37,7 @@ fragment OrderSummary on OrderTotal {
     }
     label
   }
-}`,i=`
+}`,n=`
 fragment AddressesList on OrderAddress {
   city
   company
@@ -130,13 +130,6 @@ fragment AddressesList on OrderAddress {
         ...ProductDetails
       }
     }
-    ... on DownloadableOrderItem {
-      product_name
-      downloadable_links {
-        sort_order
-        title
-      }
-    }
   }
   total {
   ...OrderSummary
@@ -147,8 +140,8 @@ ${t}
 ${r}
 ${a}
 ${s}
-${n}
 ${i}
+${n}
 ${d}
 `,u=`
   query GET_GUEST_ORDER($input: GuestOrderInformationInput!) {
@@ -157,4 +150,4 @@ ${d}
     }
   }
 ${o}
-`;export{i as A,o as G,n as O,u as a};
+`;export{n as A,o as G,i as O,u as a};
