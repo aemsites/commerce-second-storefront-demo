@@ -14,14 +14,11 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './AddressForm';
 export * from './BillToShippingAddress';
 export * from './EstimateShipping';
-export * from './FieldsForm';
-export * from './Heading';
 export * from './LoginForm';
+export * from './OrderConfirmationHeader';
 export * from './OutOfStock';
-export * from './OverlayLoader';
 export * from './PaymentMethods';
 export * from './PlaceOrder';
 export * from './ServerError';

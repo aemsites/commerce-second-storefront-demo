@@ -22,6 +22,7 @@ export declare const cartFixture: {
     total_quantity: number;
     billing_address?: {
         __typename?: "BillingCartAddress" | undefined;
+        id?: number | null | undefined;
         city: string;
         firstname: string;
         lastname: string;
@@ -30,6 +31,10 @@ export declare const cartFixture: {
         vat_id?: string | null | undefined;
         street: (string | null)[];
         telephone?: string | null | undefined;
+        prefix?: string | null | undefined;
+        suffix?: string | null | undefined;
+        middlename?: string | null | undefined;
+        fax?: string | null | undefined;
         country: {
             __typename?: "CartAddressCountry" | undefined;
             code: string;
@@ -51,6 +56,7 @@ export declare const cartFixture: {
     } | null | undefined;
     shipping_addresses: ({
         __typename?: "ShippingCartAddress" | undefined;
+        id?: number | null | undefined;
         firstname: string;
         lastname: string;
         company?: string | null | undefined;
@@ -59,6 +65,11 @@ export declare const cartFixture: {
         postcode?: string | null | undefined;
         vat_id?: string | null | undefined;
         telephone?: string | null | undefined;
+        same_as_billing: boolean;
+        prefix?: string | null | undefined;
+        suffix?: string | null | undefined;
+        middlename?: string | null | undefined;
+        fax?: string | null | undefined;
         region?: {
             __typename?: "CartAddressRegion" | undefined;
             region_id?: number | null | undefined;
