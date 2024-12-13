@@ -28,4 +28,5 @@ export * from './getEstimatedTotals';
 export * from './refreshCart';
 export { getPersistedCartData as getCartDataFromCache } from '../lib/persisted-data';
 export * from './applyCouponsToCart';
+export * from './publishShoppingCartViewEvent';
 //# sourceMappingURL=index.d.ts.map
