@@ -111,6 +111,8 @@ fragment CART_ITEM_FRAGMENT on CartItemInterface {
       url
       label
     }
+    url_key
+    url_suffix
     canonical_url
     categories {
       url_path
