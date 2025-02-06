@@ -3,10 +3,12 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
+// Cart dropin
+import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
+
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-// TODO: Following two imports added for demo purpose (Auth Drop-In)
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 
@@ -190,7 +192,12 @@ export default async function decorate(block) {
 
   async function toggleMiniCart(state) {
     const show = state ?? !minicartPanel.classList.contains('nav-tools-panel--show');
+    const stateChanged = show !== minicartPanel.classList.contains('nav-tools-panel--show');
     minicartPanel.classList.toggle('nav-tools-panel--show', show);
+
+    if (stateChanged && show) {
+      publishShoppingCartViewEvent();
+    }
   }
 
   cartButton.addEventListener('click', () => toggleMiniCart());
@@ -273,7 +280,9 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 
-  // TODO: Following statements added for demo purpose (Auth Drop-In)
-  renderAuthCombine(navSections);
+  renderAuthCombine(
+    navSections,
+    () => !isDesktop.matches && toggleMenu(nav, navSections, false),
+  );
   renderAuthDropdown(navTools);
 }

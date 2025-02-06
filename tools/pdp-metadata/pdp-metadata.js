@@ -11,7 +11,12 @@ const configFile = `${basePath}/configs.json?sheet=prod`;
 async function performCatalogServiceQuery(config, query, variables) {
   const headers = {
     'Content-Type': 'application/json',
-    'x-api-key': config['commerce-x-api-key'],
+    'x-api-key': config['commerce.headers.cs.x-api-key'],
+    'Magento-Customer-Group': config['commerce.headers.cs.Magento-Customer-Group'],
+    'Magento-Environment-Id': config['commerce.headers.cs.Magento-Environment-Id'],
+    'Magento-Store-Code': config['commerce.headers.cs.Magento-Store-Code'],
+    'Magento-Store-View-Code': config['commerce.headers.cs.Magento-Store-View-Code'],
+    'Magento-Website-Code': config['commerce.headers.cs.Magento-Website-Code'],
   };
 
   const apiCall = await commerceEndpointWithQueryParams();
@@ -108,6 +113,7 @@ const getProducts = async (config, pageNumber) => {
         metaTitle,
         description,
         shortDescription,
+        lastModifiedAt,
       } = item.productView;
       const { url: imageUrl } = item.productView.images?.[0] ?? { url: '' };
 
@@ -139,6 +145,7 @@ const getProducts = async (config, pageNumber) => {
           meta_description: finalDescription,
           'og:image': baseImageUrl,
           'og:image:secure_url': baseImageUrl,
+          'last-modified': lastModifiedAt,
         },
       };
     }));
@@ -164,7 +171,7 @@ async function addVariantsToProducts(products, config) {
         item_${i}: variants(sku: "${product.productView.sku}") {
           ...ProductVariant
         }
-        `  
+        `
       }).join('\n')}
     }${variantsFragment}`;
 
@@ -205,6 +212,7 @@ async function addVariantsToProducts(products, config) {
       'og:url',
       'og:image',
       'og:image:secure_url',
+      'last-modified',
       'json-ld',
     ],
   ];
@@ -215,12 +223,13 @@ async function addVariantsToProducts(products, config) {
         metaData.meta_title, // title
         metaData.meta_description, // description
         metaData.meta_keyword, // keywords
-        'og:product', // og:type
+        'product', // og:type
         metaData.meta_title, // og:title
         metaData.meta_description, // og:description
         `${basePath}${metaData.path}`, // og:url
         metaData['og:image'], // og:image
         metaData['og:image:secure_url'], // og:image:secure_url
+        metaData['last-modified'], // last-modified header
         getJsonLd(metaData, variants), // json-ld
       ],
     );

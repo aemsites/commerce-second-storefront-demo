@@ -21,7 +21,7 @@ import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttribu
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
 
 // Libs
-import { setJsonLd, loadErrorPage } from '../../scripts/commerce.js';
+import { setJsonLd } from '../../scripts/commerce.js';
 import { fetchPlaceholders } from '../../scripts/aem.js';
 
 // Initializers
@@ -32,11 +32,6 @@ export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
-
-  if (!product) {
-    await loadErrorPage();
-    return Promise.reject();
-  }
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -137,13 +132,13 @@ export default async function decorate(block) {
 
     // Configuration – Button - Add to Cart
     UI.render(Button, {
-      children: labels.PDP.Product.AddToCart.label,
+      children: labels.PDP?.Product?.AddToCart?.label,
       icon: Icon({ source: 'Cart' }),
       onClick: async () => {
         try {
           addToCart.setProps((prev) => ({
             ...prev,
-            children: labels.Custom.AddingToCart.label,
+            children: labels.Custom?.AddingToCart?.label,
             disabled: true,
           }));
 
@@ -180,7 +175,7 @@ export default async function decorate(block) {
         } finally {
           addToCart.setProps((prev) => ({
             ...prev,
-            children: labels.PDP.Product.AddToCart.label,
+            children: labels.PDP?.Product?.AddToCart?.label,
             disabled: false,
           }));
         }
@@ -191,9 +186,14 @@ export default async function decorate(block) {
     UI.render(Button, {
       icon: Icon({ source: 'Heart' }),
       variant: 'secondary',
+      'aria-label': labels.Custom?.AddToWishlist?.label,
       onClick: async () => {
         try {
-          addToWishlist.setProps((prev) => ({ ...prev, disabled: true }));
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: true,
+            'aria-label': labels.Custom?.AddingToWishlist?.label,
+          }));
 
           const values = pdpApi.getProductConfigurationValues();
 
@@ -204,7 +204,11 @@ export default async function decorate(block) {
         } catch (error) {
           console.error(error);
         } finally {
-          addToWishlist.setProps((prev) => ({ ...prev, disabled: false }));
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: false,
+            'aria-label': labels.Custom?.AddToWishlist?.label,
+          }));
         }
       },
     })($addToWishlist),
@@ -353,7 +357,8 @@ function setMetaTags(product) {
   createMetaTag('title', product.metaTitle || product.name, 'name');
   createMetaTag('description', product.metaDescription, 'name');
   createMetaTag('keywords', product.metaKeyword, 'name');
-  createMetaTag('og:type', 'og:product', 'property');
+
+  createMetaTag('og:type', 'product', 'property');
   createMetaTag('og:description', product.shortDescription, 'property');
   createMetaTag('og:title', product.metaTitle || product.name, 'property');
   createMetaTag('og:url', window.location.href, 'property');
@@ -361,6 +366,6 @@ function setMetaTags(product) {
   const metaImage = mainImage?.url || product?.images[0]?.url;
   createMetaTag('og:image', metaImage, 'property');
   createMetaTag('og:image:secure_url', metaImage, 'property');
-  createMetaTag('og:product:price:amount', price.value, 'property');
-  createMetaTag('og:product:price:currency', price.currency, 'property');
+  createMetaTag('product:price:amount', price.value, 'property');
+  createMetaTag('product:price:currency', price.currency, 'property');
 }

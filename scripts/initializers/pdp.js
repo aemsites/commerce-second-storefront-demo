@@ -10,8 +10,13 @@ import {
   fetchProductData,
 } from '@dropins/storefront-pdp/api.js';
 import { initializeDropin } from './index.js';
-import { commerceEndpointWithQueryParams, getOptionsUIDsFromUrl, getSkuFromUrl } from '../commerce.js';
-import { getConfigValue } from '../configs.js';
+import {
+  commerceEndpointWithQueryParams,
+  getOptionsUIDsFromUrl,
+  getSkuFromUrl,
+  loadErrorPage,
+} from '../commerce.js';
+import { getHeaders } from '../configs.js';
 import { fetchPlaceholders } from '../aem.js';
 
 export const IMAGES_SIZES = {
@@ -25,8 +30,8 @@ await initializeDropin(async () => {
 
   // Set Fetch Headers (Service)
   setFetchGraphQlHeaders({
+    ...(await getHeaders('cs')),
     'Content-Type': 'application/json',
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
   });
 
   const sku = getSkuFromUrl();
@@ -36,6 +41,10 @@ await initializeDropin(async () => {
     fetchProductData(sku, { optionsUIDs, skipTransform: true }).then(preloadImageMiddleware),
     fetchPlaceholders(),
   ]);
+
+  if (!product?.sku) {
+    return loadErrorPage();
+  }
 
   const langDefinitions = {
     default: {
@@ -50,7 +59,7 @@ await initializeDropin(async () => {
   };
 
   // Initialize Dropins
-  await initializers.mountImmediately(initialize, {
+  return initializers.mountImmediately(initialize, {
     sku,
     optionsUIDs,
     langDefinitions,
