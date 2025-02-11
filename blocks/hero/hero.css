@@ -49,56 +49,8 @@ main .hero-container {
   height: 100%;
 }
 
-.hero p {
-  margin: 0;
-}
-
-.hero .hero-desc-wrapper {
-  color: var(--color-neutral-50);
-  position: absolute;
-  top: 15%;
-  right: 0;
-  padding: var(--spacing-medium);
-  box-sizing: border-box;
-  max-width: 500px;
-  width: 100%;
-}
-
-.hero .button-container a.button {
-margin-bottom: 0;
-}
-
-@media (width <= 768px) {
-.hero .hero-desc-wrapper {
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-bottom: unset;
-}
-}
-
-.hero .hero-desc-wrapper .button-container {
-display: inline-block;
-}
-
-.hero-container .default-content-wrapper h1,
-.hero-container .default-content-wrapper h2,
-.hero-container .default-content-wrapper h3,
-.hero-container .default-content-wrapper h4,
-.hero-container .default-content-wrapper h5,
-.hero-container .default-content-wrapper h6 {
-margin: 1rem 0 3rem;
-}
-
-
-@media (width <= 768px) {
-.hero-container .default-content-wrapper h1,
-.hero-container .default-content-wrapper h2,
-.hero-container .default-content-wrapper h3,
-.hero-container .default-content-wrapper h4,
-.hero-container .default-content-wrapper h5,
-.hero-container .default-content-wrapper h6 {
-padding: 0 1rem;
-margin: 1rem 0 2rem;
-}
+@media (width >= 900px) {
+  .hero {
+    padding: 40px 32px;
+  }
 }
