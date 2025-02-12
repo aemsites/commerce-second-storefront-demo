@@ -9,7 +9,8 @@ declare const _default: {
     "ResetPasswordForm": {
       "title": "Reset your password",
       "buttonPrimary": "Reset password",
-      "buttonSecondary": "Back to sign in"
+      "buttonSecondary": "Back to sign in",
+      "formAriaLabel": "Reset your password form"
     },
     "SignInForm": {
       "title": "Sign in",
@@ -21,8 +22,6 @@ declare const _default: {
       "title": "Sign up",
       "buttonPrimary": "Create account",
       "buttonSecondary": "Already a member? Sign in",
-      "privacyPolicyDefaultText": "I’ve read and accept the Terms of Use and Privacy Policy.",
-      "subscribedDefaultText": "Subscribe to our newsletter and be the first to know about new arrivals, sales and exclusive offers.",
       "keepMeLoggedText": "Keep me logged in after account creation",
       "failedCreateCustomerAddress": "Failed to create customer addresses:",
       "confirmPassword": {
@@ -86,6 +85,7 @@ declare const _default: {
       "floatingLabel": "Password *"
     }
   }
-};
+}
+;
 
 export default _default;
